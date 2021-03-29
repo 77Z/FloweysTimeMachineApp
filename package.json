@@ -1,0 +1,14 @@
+{
+  "name": "floweys-time-machine-electron",
+  "version": "1.0.0",
+  "description": "Floweys Time Machine",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Vince R",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^9.4.0"
+  }
+}

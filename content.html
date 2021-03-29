@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Flowey's Time Machine</title>
+    <script src="js/FileSaver.js"></script>
+    <script src="js/VincesFileSaver.js"></script>
+    <script src="presets/presets.js"></script>
+	<script src="presets/ruins-start.js"></script>
+	<script src="presets/sans-battle.js"></script>
+    <script src="presets/Undyne%20The%20Undying.js"></script>
+    <script src="presets/Asgore%20(normal).js"></script>
+    <script src="presets/Asgore%20(true%20ending).js"></script>
+    <script src="presets/Omega%20Flowey.js"></script>
+    <script src="presets/True%20Pacifist%20Ending.js"></script>
+	<script src="timeMachine.js"></script>
+
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/style.css" />
+</head>
+
+<body>
+    <div class="sidebar">
+        <header>
+            <img draggable="false" src="res/flowey_nice.png" id="floweyimg" />
+            <h1 style="margin-left: 0.4rem;">Flowey's Time Machine</h1>
+        </header>
+        <br>
+        <p>A desktop application based off the <a id="website-link" style="cursor: pointer;">website</a></p>
+        <div class="mt-1" style="display: none;">
+            <input id="mute" type="checkbox" disabled>
+            <label>Mute</label>
+        </div>
+
+        <h3>Presets</h3>
+        <div class="grid-cols-4">
+            <select id="builtinpresetselect" class="col-span-3"></select>
+            <button id="builtinpresetload">Load</button>
+
+            <h3 class="col-span-4" style="display: none; margin-bottom: -0.5rem;">Your Presets</h3>
+            <select style="display: none;" id="userpresetselect" class="col-span-2"></select>
+            <button style="display: none;" class="disabled" id="userpresetload">Load</button>
+            <button style="display: none;" class="disabled" id="userpresetsave">Save</button>
+
+            <div style="display: none;" class="grid-cols-3 col-span-4">
+                <button id="userpresetnew">New</button>
+                <button class="disabled" id="userpresetdelete">Delete</button>
+                <button class="disabled" id="userpresetexport">Export</button>
+            </div>
+        </div>
+
+        <div class="grid mt-6">
+            <button
+                title="When this file is present, the world is in the 'deleted' state that is triggered when you complete a genocide run."
+                id="savesi2" class="file-button space-x-1">
+                <img src="res/load.png" /><span>system_info_962 [?]</span>
+            </button>
+            <button title="When this file is present, you have 'sold' your soul to get the world back after a genocide run."
+                id="savesi3" class="file-button space-x-1">
+                <img src="res/load.png" /><span>system_info_963 [?]</span>
+            </button>
+        </div>
+    </div>
+
+    <div style="padding: 1rem 1rem 1rem 18.6rem">
+
+        <!-- Backups -->
+        <div class="mb-2">
+            <h1>Backups</h1>
+            <p>Create multiple save instances to play with</p>
+        </div>
+
+        <section>
+            <fieldset>
+                <legend>Active Backup</legend>
+                <p>The save you get when you launch</p>
+            </fieldset>
+        </section>
+        <!-- END -->
+
+
+        <!-- Persistent Data -->
+        <div class="mb-2 mt-6">
+            <h1>Persistent Data (undertale.ini, Modifies Active Backup)</h1>
+            <p>Things that UNDERTALE remembers throughout multiple playthroughs</p>
+        </div>
+
+        <section>
+            <fieldset>
+                <legend>General</legend>
+                <div class="grid-cols-3">
+                    <label for="ini-file" class="file-button space-x-1">
+                        <img src="res/heart.svg"><span>FILE</span>
+                    </label>
+                    <input id="ini-file" type="file" onchange="fileUpload(event)">
+                    <button id="ini-loadbutton" class="file-button space-x-1 disabled">
+                        <img src="res/load.png"><span>LOAD</span>
+                    </button>
+                    <button id="ini-savebutton" class="file-button space-x-1">
+                        <img src="res/star.png"><span>SAVE</span>
+                    </button>
+                </div>
+
+                <div class="grid-cols-3">
+                    <label class="mt-1">Name</label>
+                    <input id="ini-name" class="col-span-3 mb-1" placeholder="Name the fallen human" type="text" autocomplete="off">
+                    <label>Fun</label>
+                    <label>LOVE</label>
+                    <label>Kills</label>
+                    <input id="ini-fun" class="mb-1" placeholder="Fun" type="number" autocomplete="off">
+                    <input id="ini-love" class="mb-1" placeholder="LOVE" type="number" autocomplete="off">
+                    <input id="ini-kills" class="mb-1" placeholder="Kills" type="number" autocomplete="off">
+                    <label>Location</label>
+                    <select class="col-span-3" id="ini-location" class="w-full"></select>
+                </div>
+            </fieldset>
+
+            <div class="flex">
+                <fieldset class="w-full">
+                    <legend>Omega Flowey</legend>
+                    <div class="grid">
+                        <label>Times you died</label>
+                        <input class="mb-1" id="ini-omega-flowey-deaths" placeholder="Times you died" type="number" autocomplete="off">
+                        <label class="mt-1">Upcoming soul fight</label>
+                        <select title="Upcoming soul fight" id="ini-omega-flowey-soul" class="w-full"></select>
+                        <div class="mt-2">
+                            <input id="ini-omega-flowey-trapped" type="checkbox">
+                            <label title="Trapped in Flowey's World">Trapped in Flowey's World</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="w-full">
+                    <legend>Other</legend>
+                    <input id="ini-dodged-all-special-thanks" type="checkbox">
+                    <label>Dodged special thanks</label>
+                </fieldset>
+            </div>
+        </section>
+        <!-- END -->
+
+        <!-- Save Data -->
+        <div class="mb-2 mt-6">
+            <h1>SAVE Data (file0, Modifies Active Backup)</h1>
+            <p>This is what gets SAVED at SAVE points</p>
+        </div>
+
+        <section>
+            <fieldset>
+                <legend>General</legend>
+                <div class="grid-cols-3">
+                    <label for="sav-file" class="file-button space-x-1">
+                        <img src="res/heart.svg"><span>FILE</span>
+                    </label>
+                    <input id="sav-file" type="file" onchange="fileUpload(event)">
+                    <button id="sav-loadbutton" class="file-button space-x-1 disabled">
+                        <img src="res/load.png"><span>LOAD</span>
+                    </button>
+                    <button id="sav-savebutton" class="file-button space-x-1">
+                        <img src="res/star.png"><span>SAVE</span>
+                    </button>
+                </div>
+
+                <div class="space-y-1">
+                    <div class="grid-cols-4">
+                        <label class="mt-1">Name</label>
+                        <input id="sav-name" class="col-span-4 mb-1" placeholder="Name the fallen human" type="text" autocomplete="off">
+                        <label>Fun</label>
+                        <label>LOVE</label>
+                        <label>Kills</label>
+                        <label>&nbsp;</label>
+                        <input id="sav-fun" class="mb-1" placeholder="Fun" type="number" autocomplete="off">
+                        <input id="sav-love" class="mb-1" placeholder="LOVE" type="number" autocomplete="off">
+                        <input id="sav-kills" class="mb-1" placeholder="Kills" type="number" autocomplete="off">
+                        <input id="sav-unkkills" class="mb-1" placeholder="Kills" type="number" autocomplete="off">
+                        <label>Location</label>
+                        <select class="col-span-4" id="sav-location" class="w-full"></select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Stats</legend>
+                <div class="grid-cols-3">
+                    <label>HP</label>
+                    <label>EXP</label>
+                    <label>Gold</label>
+                    <input id="sav-hp" class="mb-1" type="number" autocomplete="off">
+                    <input id="sav-exp" class="mb-1" type="number" autocomplete="off">
+                    <input id="sav-gold" class="mb-1" type="number" autocomplete="off">
+                    <label>ATK</label>
+                    <label class="col-span-2">Weapon ATK</label>
+                    <input id="sav-at" class="mb-1" type="number" autocomplete="off">
+                    <input id="sav-weaponat" class="col-span-2 mb-1" type="number" autocomplete="off">
+                    <label>DF</label>
+                    <label class="col-span-2">Armor DF</label>
+                    <input id="sav-df" class="mb-1" type="number" autocomplete="off">
+                    <input id="sav-armordf" class="col-span-2 mb-1" type="number" autocomplete="off">
+                </div>
+                <div class="grid-cols-2 mt-2">
+                    <label>Weapon</label>
+                    <label>Armor</label>
+                    <select id="sav-weapon"></select>
+                    <select id="sav-armor"></select>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Inventory</legend>
+                <div class="grid-cols-2">
+                    <label>SLOT 1</label>
+                    <label>SLOT 2</label>
+                    <select id="sav-invslot1" class="mb-1"></select>
+                    <select id="sav-invslot2" class="mb-1"></select>
+                    <label>SLOT 3</label>
+                    <label>SLOT 4</label>
+                    <select id="sav-invslot3" class="mb-1"></select>
+                    <select id="sav-invslot4" class="mb-1"></select>
+                    <label>SLOT 5</label>
+                    <label>SLOT 6</label>
+                    <select id="sav-invslot5" class="mb-1"></select>
+                    <select id="sav-invslot6" class="mb-1"></select>
+                    <label>SLOT 7</label>
+                    <label>SLOT 8</label>
+                    <select id="sav-invslot7"></select>
+                    <select id="sav-invslot8"></select>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Cellphone</legend>
+                <div class="grid-cols-2">
+                    <label>SLOT 1</label>
+                    <label>SLOT 2</label>
+                    <select id="sav-cellslot1" class="mb-1"></select>
+                    <select id="sav-cellslot2" class="mb-1"></select>
+                    <label>SLOT 3</label>
+                    <label>SLOT 4</label>
+                    <select id="sav-cellslot3" class="mb-1"></select>
+                    <select id="sav-cellslot4" class="mb-1"></select>
+                    <label>SLOT 5</label>
+                    <label>SLOT 6</label>
+                    <select id="sav-cellslot5" class="mb-1"></select>
+                    <select id="sav-cellslot6" class="mb-1"></select>
+                    <label>SLOT 7</label>
+                    <label>SLOT 8</label>
+                    <select id="sav-cellslot7"></select>
+                    <select id="sav-cellslot8"></select>
+                    <div class="col-span-2">
+                        <input id="sav-havecell" type="checkbox" name="exitedtruelab">
+                        <label>You have a cellphone</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="flex">
+                <fieldset>
+                    <legend>Ruins</legend>
+                    <div class="grid-cols-3">
+                        <label>Kills</label>
+                        <label>Dummy</label>
+                        <label>Toriel</label>
+                        <input id="sav-ruinskills" placeholder="Kills" type="number" autocomplete="off">
+                        <select id="sav-trainingdummystate"></select>
+                        <select id="sav-torielstate"></select>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Snowdin</legend>
+                    <div class="grid-cols-2">
+                        <label>Kills</label>
+                        <label>Doggo</label>
+                        <input id="sav-snowdinkills" placeholder="Kills" type="number" autocomplete="off">
+                        <select title="Doggo state" id="sav-doggostate"></select>
+                        <label>Dogamy</label>
+                        <label>Greater Dog</label>
+                        <select id="sav-dogamydogaressastate"></select>
+                        <select id="sav-greaterdogstate"></select>
+                        <label>Comedian</label>
+                        <label>Papyrus</label>
+                        <select title="Comedian state" id="sav-comedianstate"></select>
+                        <select title="Papyrus state" id="sav-papyrusstate"></select>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="flex">
+                <fieldset>
+                    <legend>Waterfall</legend>
+                    <div class="grid-cols-3">
+                        <label>Kills</label>
+                        <label>Shyren</label>
+                        <label>Mad Dummy</label>
+                        <input id="sav-waterfallkills" placeholder="Kills" type="number" autocomplete="off">
+                        <select id="sav-shyrenstate"></select>
+                        <select id="sav-maddummystate"></select>
+                    </div>
+                    <div class="grid-cols-2">
+                        <label>Undyne 1</label>
+                        <label>Undyne 2</label>
+                        <select id="sav-undynestate1"></select>
+                        <select id="sav-undynestate2"></select>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Hotland</legend>
+                    <div class="grid-cols-2">
+                        <label>Kills</label>
+                        <label>Bro Guards</label>
+                        <input id="sav-hotlandkills" placeholder="Kills" type="number" autocomplete="off">
+                        <select title="Bro Guards state" id="sav-broguardsstate"></select>
+                        <label>Muffet</label>
+                        <label>Mettaton</label>
+                        <select title="Muffet state" id="sav-muffetstate"></select>
+                        <select title="Mettaton statae" id="sav-mettatonstate"></select>
+                    </div>
+                </fieldset>
+            </div>
+
+            <fieldset>
+                <legend>Other</legend>
+                <div>
+                    <input id="sav-exitedtruelab" type="checkbox" name="exitedtruelab">
+                    <label title="True lab exited (can get true ending)">True lab exited</label>
+                </div>
+                <div class="mb-2">
+                    <input id="sav-defeatedasriel" type="checkbox">
+                    <label title="Defeated Asriel (true pacifist finished)" for="defeated-asriel">Defeated Asriel</label>
+                </div>
+                <label>Plot value</label>
+                <select title="Plot value" id="sav-plotvalue" class="w-full mt-1"></select>
+            </fieldset>
+        </section>
+        <!-- END -->
+
+        <!-- Misc. -->
+
+        <div class="mb-2 mt-6">
+            <h1>MISC.</h1>
+            <p>Other settings to mess with, these are backup independent</p>
+        </div>
+
+        <section>
+            <fieldset>
+                <legend>Splash</legend>
+                <button>Remove TM from opening splash</button>
+                <button>Restore TM</button>
+            </fieldset>
+        </section>
+
+        <!-- END -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "Undertale";
+    src: url("../fonts/Undertale-Regular.eot");
+
+    src: url("../fonts/Undertale-Regular.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Undertale-Regular.woff") format("woff"),
+        url("../fonts/Undertale-Regular.ttf") format("truetype"),
+        url("../fonts/Undertale-Regular.svg#svgFontName") format("svg");
+}
+
+@font-face {
+    font-family: "Undertale-Bold";
+    src: url("../fonts/Undertale-Bold.eot");
+
+    src: url("../fonts/Undertale-Bold.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Undertale-Bold.woff") format("woff"),
+        url("../fonts/Undertale-Bold.ttf") format("truetype"),
+        url("../fonts/Undertale-Bold.svg#svgFontName") format("svg");
+}
